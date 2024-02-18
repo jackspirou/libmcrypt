@@ -16,7 +16,7 @@
 /*                                                                      */
 /* Dr Brian Gladman (gladman@seven77.demon.co.uk) 14th January 1999     */
 
-/* modified in order to use the libmcrypt API by Nikos Mavroyanopoulos 
+/* modified in order to use the libmcrypt API by Nikos Mavroyanopoulos
  * All modifications are placed under the license of libmcrypt.
  */
 
@@ -45,6 +45,8 @@
  */
 
 #include <libdefs.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include <mcrypt_modules.h>
 #include "twofish.h"
@@ -367,22 +369,22 @@ void gen_mk_tab(TWI * pkey, word32 key[])
    where the coefficients are in the finite field GF(2^8) with a
    modular polynomial a^8 + a^6 + a^3 + a^2 + 1. To generate the
    remainder we have to start with a 12th order polynomial with our
-   eight input bytes as the coefficients of the 4th to 11th terms. 
+   eight input bytes as the coefficients of the 4th to 11th terms.
    That is:
 
    m[7] * x^11 + m[6] * x^10 ... + m[0] * x^4 + 0 * x^3 +... + 0
 
    We then multiply the generator polynomial by m[7] * x^7 and subtract
-   it - xor in GF(2^8) - from the above to eliminate the x^7 term (the 
-   artihmetic on the coefficients is done in GF(2^8). We then multiply 
+   it - xor in GF(2^8) - from the above to eliminate the x^7 term (the
+   artihmetic on the coefficients is done in GF(2^8). We then multiply
    the generator polynomial by x^6 * coeff(x^10) and use this to remove
    the x^10 term. We carry on in this way until the x^4 term is removed
    so that we are left with:
 
    r[3] * x^3 + r[2] * x^2 + r[1] 8 x^1 + r[0]
 
-   which give the resulting 4 bytes of the remainder. This is equivalent 
-   to the matrix multiplication in the Twofish description but much faster 
+   which give the resulting 4 bytes of the remainder. This is equivalent
+   to the matrix multiplication in the Twofish description but much faster
    to implement.
 
  */
@@ -480,18 +482,18 @@ WIN32DLL_DEFINE
 /* This macro was moved to an inline function, because it
  * was breaking some compilers.
  */
-inline 
+inline
 static void f_rnd(int i, word32* blk, TWI* pkey, word32 t0, word32 t1)
 {
-    t1 = g1_fun(blk[1]); 
+    t1 = g1_fun(blk[1]);
     t0 = g0_fun(blk[0]);
-    
+
     blk[2] = rotr32(blk[2] ^ (t0 + t1 + pkey->l_key[4 * (i) + 8]), 1);
 
     blk[3] = rotl32(blk[3], 1) ^ (t0 + 2 * t1 + pkey->l_key[4 * (i) + 9]);
-    t1 = g1_fun(blk[3]); 
+    t1 = g1_fun(blk[3]);
     t0 = g0_fun(blk[2]);
-    
+
     blk[0] = rotr32(blk[0] ^ (t0 + t1 + pkey->l_key[4 * (i) + 10]), 1);
     blk[1] = rotl32(blk[1], 1) ^ (t0 + 2 * t1 + pkey->l_key[4 * (i) + 11]);
 }
@@ -629,10 +631,10 @@ WIN32DLL_DEFINE int _mcrypt_self_test()
 	memcpy( plaintext, PT, 16);
 
 	memcpy(ciphertext, plaintext, 16);
-	
+
 	key = malloc(_mcrypt_get_size());
 	if (key==NULL) return -1;
-	
+
 	_mcrypt_set_key(key, (void *) keyword, 16);
 
 	_mcrypt_encrypt(key, (void *) ciphertext);
