@@ -28,12 +28,10 @@
 # define lt_dlsetsearchpath(x) 0
 #endif
 
-#ifdef STDC_HEADERS
 # include <stdlib.h>
 # include <stdio.h>
 # include <ctype.h>
 # include <string.h>
-#endif
 
 #ifdef HAVE_STRINGS_H
 # include <strings.h>
@@ -84,12 +82,12 @@
  typedef unsigned int word16;
 #elif SIZEOF_UNSIGNED_SHORT_INT == 2
  typedef unsigned short word16;
-#else 
+#else
 # error "Cannot find a 16 bit integer in your system, sorry."
 #endif
 
 #if SIZEOF_UNSIGNED_CHAR == 1
- typedef unsigned char byte; 
+ typedef unsigned char byte;
 #else
 # error "Cannot find an 8 bit char in your system, sorry."
 #endif
@@ -107,4 +105,3 @@
 #endif
 
 #endif /* LIBDEFS_H */
-

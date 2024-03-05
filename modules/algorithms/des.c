@@ -10,7 +10,7 @@
  *	char kn[16][8];
  */
 
-/* modified in order to use the libmcrypt API by Nikos Mavroyanopoulos 
+/* modified in order to use the libmcrypt API by Nikos Mavroyanopoulos
  * All modifications are placed under the license of libmcrypt.
  */
 
@@ -35,9 +35,9 @@
 
 /* #define	NULL	0 */
 
-static void permute_ip(), permute_fp(), perminit_ip(), spinit(),
-perminit_fp();
-static word32 f();
+static void permute_ip(char *, DES_KEY *, char *), permute_fp(char *, DES_KEY *, char *), perminit_ip(DES_KEY *), spinit(DES_KEY *),
+perminit_fp(DES_KEY *);
+static word32 f(DES_KEY *, word32, char *);
 
 
 /* Tables defined in the Data Encryption Standard documents */
@@ -650,7 +650,7 @@ WIN32DLL_DEFINE int _mcrypt_self_test()
 	_mcrypt_decrypt(key, (void *) ciphertext);
 	free(key);
 
-	if (strcmp(ciphertext, plaintext) != 0) {
+	if (strcmp((char *) ciphertext, (char *) plaintext) != 0) {
 		printf("failed internally\n");
 		return -1;
 	}

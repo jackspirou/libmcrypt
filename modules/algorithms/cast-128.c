@@ -9,13 +9,16 @@
 
 /* Adapted to the pike cryptographic toolkit by Niels Möller */
 
-/* modified in order to use the libmcrypt API by Nikos Mavroyanopoulos 
+/* modified in order to use the libmcrypt API by Nikos Mavroyanopoulos
  * All modifications are placed under the license of libmcrypt.
  */
 
 /* $Id: cast-128.c,v 1.12 2003/01/19 17:48:27 nmav Exp $ */
 
 #include <libdefs.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include <mcrypt_modules.h>
 #include "cast-128.h"
@@ -377,7 +380,7 @@ WIN32DLL_DEFINE int _mcrypt_self_test()
 	_mcrypt_decrypt(key, (void *) ciphertext);
 	free(key);
 
-	if (strcmp(ciphertext, plaintext) != 0) {
+	if (strcmp((char *) ciphertext, (char *) plaintext) != 0) {
 		printf("failed internally\n");
 		return -1;
 	}
